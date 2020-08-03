@@ -4,7 +4,8 @@ const path = require('path');
 const crypto = require('crypto');
 
 //Parsing Command-Line Arguments Here
-const yargs = require('yargs').command({
+const yargs = require('yargs');
+yargs.command({
   command: 'encrypt',
   describe: 'Encrypts the given file with given key \
              For example :\
@@ -56,8 +57,9 @@ const yargs = require('yargs').command({
   .help()
   .alias('help','h')
   .argv;
-
 yargs.parse();
+
+
 
 
 
