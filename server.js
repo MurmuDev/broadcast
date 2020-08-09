@@ -20,7 +20,7 @@ function start(handle,route)
     route(handle,pathname,(data)=>{
 
       //use response object here
-      res.writeHead(200,{"content-type":"text/JSON"});
+      res.writeHead(200,{"content-type":"application/JSON"});
       res.write(JSON.stringify(data));
       res.end();
     });
