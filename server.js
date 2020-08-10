@@ -12,16 +12,20 @@ function start(handle,route)
   http.createServer((req,res) => {
 
     //get the path
-    var pathname = url.parse(req.url).pathname;
-    console.log("Request received :",pathname);
+    var urlParsed = url.parse(req.url);
+    console.log("Request received :",urlParsed.pathname);
 
     //pass router function the pathname
-    //data is GET / POSTed data
-    route(handle,pathname,(data)=>{
+    //example for dataobj{
+    //                    data : "this is data",
+    //                    type : "application/json",
+    //                    HTTPcode : 404
+    //                    }
+    route(handle,urlParsed,(dataobj)=>{
 
       //use response object here
-      res.writeHead(200,{"content-type":"application/JSON"});
-      res.write(JSON.stringify(data));
+      res.writeHead(dataobj.HTTPcode,{"content-type":dataobj.type});
+      res.write(JSON.stringify(dataobj.data));
       res.end();
     });
   }).listen(PORT,()=>{
