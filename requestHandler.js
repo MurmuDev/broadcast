@@ -10,11 +10,9 @@ function all(callback)
     database : "db"
   };
 
-  //type query here
-  let queryString  = "SELECT * FROM store";
 
 
-  dbfile.runQuery(options,queryString,(err,result)=>{
+  dbfile.getAllData(options,['id','email','file'],'public',(err,result)=>{
     if(err)
      throw err;
     else
@@ -65,7 +63,7 @@ function getByMail(callback,urlParsed)
    let queryString  = "SELECT * FROM store where email="+"\""+mail+"\"";
 
 
-  dbfile.runQuery(options,queryString,(err,result)=>{
+  dbfile.getSingle(options,['id','email','file'],'public',['mail = '+`'`+toString(mail)+`'`],(err,result)=>{
     if(err)
      throw err;
     else
