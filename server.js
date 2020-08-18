@@ -1,7 +1,7 @@
 //dependencies
 const http = require('http'),
-      url = require('url');
-
+      url = require('url'),
+      formidable = require('formidable');
 
 //change port here
 const PORT = 5000;
@@ -21,13 +21,13 @@ function start(handle,route)
     //                    type : "application/json",
     //                    HTTPcode : 404
     //                    }
-    route(handle,urlParsed,(dataobj)=>{
+    route(handle,urlParsed,(dataobj,req)=>{
 
       //use response object here
       res.writeHead(dataobj.HTTPcode,{"content-type":dataobj.type});
       res.write(JSON.stringify(dataobj.data));
       res.end();
-    });
+    },req);
   }).listen(PORT,()=>{
     console.log("Server listening on port :",PORT);
   });

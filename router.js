@@ -1,9 +1,9 @@
 //main routing function
-function route(handler,urlParsed,callback)
+function route(handler,urlParsed,callback,req)
 {
   console.log("Processing request for :",urlParsed.pathname);
   if(typeof handler[urlParsed.pathname] === 'function')
-   handler[urlParsed.pathname](callback,urlParsed);
+   handler[urlParsed.pathname](callback,urlParsed,req);
   else
    {
      (()=>{

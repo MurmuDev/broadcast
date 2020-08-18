@@ -8,7 +8,7 @@ const db = require('./db');
 var handle = {};
 handle["/"] = requestHandler.all;
 handle["/all"] = requestHandler.all;
-handle["/upload"] = requestHandler.upload;
+handle["/uploadKey"] = requestHandler.uploadKey;
 handle["/getByMail"] = requestHandler.getByMail;
 
 

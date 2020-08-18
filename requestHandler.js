@@ -1,4 +1,6 @@
-const dbfile = require('./db');
+const dbfile = require('./db'),
+      fileHandling = require('./fileHandling');
+
 
 function all(callback)
 {
@@ -25,15 +27,21 @@ function all(callback)
 
 }
 
-function upload(callback)
+
+function uploadKey(callback,urlParsed,req)
 {
-  console.log("upload called");
-  let data = 'upload called';
-  callback({
-    data : data,
-    type : "text/plain",
-    HTTPcode : 200
-  });
+
+
+
+   console.log('starting to parse form');
+
+   //edit fileJSON here
+   let fileJSON = {
+     newpath : '/home/murmu/'
+   }
+
+
+   fileHandling.moveFile(req,fileJSON,callback);
 }
 
 
@@ -60,8 +68,6 @@ function getByMail(callback,urlParsed)
       mail = "";
     }
 
-   let queryString  = "SELECT * FROM store where email="+"\""+mail+"\"";
-
 
   dbfile.getSingle(options,['id','email','file'],'public',['mail = '+`'`+toString(mail)+`'`],(err,result)=>{
     if(err)
@@ -82,5 +88,5 @@ function getByMail(callback,urlParsed)
 
 //export here
 exports.all = all;
-exports.upload = upload;
+exports.uploadKey = uploadKey;
 exports.getByMail = getByMail;

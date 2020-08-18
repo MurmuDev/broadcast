@@ -18,7 +18,9 @@ function runQuery(options,queryString,callback)
 function getAllData(options,fields,table,callback)
 {
   let fieldString = fields.join(',');
+
   let queryString = "SELECT"+" "+fieldString+" "+"FROM"+" "+table;
+
   mysql.createConnection(options).query(queryString,(err,result)=>{
     callback(err,result)
   })
@@ -31,12 +33,13 @@ function getSingle(options,fields,table,where,callback)
   let fieldString = fields.join(',');
   let whereString = where.join('AND');
   let queryString = "SELECT"+" "+fieldString+" "+"FROM"+" "+table+" WHERE "+whereString;
-  console.log(queryString);
+
+
   mysql.createConnection(options).query(queryString,(err,result)=>{
     callback(err,result)
   })
 }
 
-exports.runQuery = runQuery;
+// exports.runQuery = runQuery;
 exports.getAllData = getAllData;
 exports.getSingle = getSingle;
