@@ -23,7 +23,7 @@ function getAllData(options,fields,table,callback)
 
   mysql.createConnection(options).query(queryString,(err,result)=>{
     callback(err,result)
-  })
+  });
 
 }
 

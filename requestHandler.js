@@ -1,8 +1,11 @@
 const dbfile = require('./db'),
       fileHandling = require('./fileHandling');
+      parser = require('./parser')
+      fs = require('fs');
 
 
-function all(callback)
+//get all data from key table
+function allKey(resCallback)
 {
   //enter database details here
   let options = {
@@ -18,7 +21,7 @@ function all(callback)
     if(err)
      throw err;
     else
-     callback({
+     resCallback({
        data: result,
        type: "application/json",
        HTTPcode : 200
@@ -28,24 +31,67 @@ function all(callback)
 }
 
 
-function uploadKey(callback,urlParsed,req)
+//upload message
+function uploadMessage(resCallback,urlParsed,req)
 {
+  parser.parseForm(req,
 
+  (fields,files)=>{
+    let oldpath = files.file.path;
+    let dateString = new Date().toISOString();
 
+    //getting home directory below
+    //const homedir = require('os').homedir();
 
-   console.log('starting to parse form');
+    //set new address here
+    //path must be accessible for the database server
+    let newpath = '/var/lib/mysql-files/message'+'/'+dateString;
 
-   //edit fileJSON here
-   let fileJSON = {
-     newpath : '/home/murmu/'
-   }
+    //moving upload file from temp
+    fileHandling.renameFile(oldpath,newpath);
 
+  },
 
-   fileHandling.moveFile(req,fileJSON,callback);
+  callback({
+    data : '',
+    type : 'text/plain',
+    HTTPcode :204
+  }))
 }
 
 
-function getByMail(callback,urlParsed)
+
+//gets the request object from the client and parsed the form
+function uploadKey(resCallback,urlParsed,req)
+{
+   parser.parseForm(req,
+
+     (fields,files)=>{
+       let oldpath = files.file.path;
+
+
+              let dateString = new Date().toISOString();
+
+              //getting home directory below
+              //const homedir = require('os').homedir();
+
+              //set new address here
+              //path must be accessible for the database server
+              let newpath = '/var/lib/mysql-files/key'+'/'+dateString;
+
+       //moving upload file from temp
+       fileHandling.renameFile(oldpath,newpath);
+     },
+   //callback for the response object
+   resCallback({
+     data : '',
+     type : 'text/plain',
+     HTTPcode : 204
+   }));
+}
+
+//get fields by mail url parameter
+function getByMail(resCallback,urlParsed)
 {
   //enter database details here
   let options = {
@@ -56,7 +102,7 @@ function getByMail(callback,urlParsed)
   };
 
 
-  //type query here
+  //get urls query here
   let params = new URLSearchParams(urlParsed.query);
   let mail = params.get("mail");
   let code = 200;
@@ -68,12 +114,12 @@ function getByMail(callback,urlParsed)
       mail = "";
     }
 
-
-  dbfile.getSingle(options,['id','email','file'],'public',['mail = '+`'`+toString(mail)+`'`],(err,result)=>{
+  //getSingle(  [field1, field2, field3..... ], tablename , [ where1 = 'whereval1' , where2 = 'whereval2' ....],callback(err,result))
+  dbfile.getSingle(options,['id','email','file'],'public',['email = '+`'`+mail.toString()+`'`],(err,result)=>{
     if(err)
      throw err;
     else
-     callback({
+     resCallback({
        data: result,
        type: "application/json",
        HTTPcode : code
@@ -86,7 +132,48 @@ function getByMail(callback,urlParsed)
 }
 
 
+//get message by mail
+function messageByMail(resCallback,urlParsed)
+{
+  //enter database details here
+  let options = {
+    host: "localhost",
+    user: "murmu",
+    password : "murmu",
+    database : "db"
+  };
+
+
+  //get url query here
+  let params = new URLSearchParams(urlParsed.query);
+  let mail = params.get("mail");
+  let code = 200;
+
+  //checking if no url parameters passed
+  if(mail === undefined)
+    {
+      code = 404;
+      mail = "";
+    }
+
+    console.log(mail);
+
+  //getSingle(  [field1, field2, field3..... ], tablename , [ where1 = 'whereval1' , where2 = 'whereval2' ....],callback(err,result))
+  dbfile.getSingle(options,['message'],'messages',['email = '+`'`+mail.toString()+`'`],(err,result)=>{
+    if(err)
+     throw err;
+    else
+     resCallback({
+       data: result,
+       type: "application/json",
+       HTTPcode : code
+     });
+  })
+}
+
+
 //export here
-exports.all = all;
+exports.allKey = allKey;
 exports.uploadKey = uploadKey;
 exports.getByMail = getByMail;
+exports.messageByMail = messageByMail;

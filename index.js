@@ -6,10 +6,12 @@ const db = require('./db');
 
 //define end points here
 var handle = {};
-handle["/"] = requestHandler.all;
-handle["/all"] = requestHandler.all;
+handle["/"] = requestHandler.allKey;
+handle["/all"] = requestHandler.allKey;
 handle["/uploadKey"] = requestHandler.uploadKey;
 handle["/getByMail"] = requestHandler.getByMail;
+handle["/messageByMail"] = requestHandler.messageByMail;
 
 
+//starting the server
 server.start(handle,router.route);
