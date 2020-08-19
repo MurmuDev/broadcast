@@ -9,7 +9,7 @@ Our prime goal is to provide end-to-end information broadcast.
 
 We are worried about organisations and government spying on our messages.
 
-If we dont have your private keys, then there is no back-door.
+If we dont have your private keys, then there is no back-door **:)**
 
 
 ## API description:
