@@ -4,10 +4,12 @@ A Node.js PGP-like message sending app
 Currently in Development Stage.
 
 
-##Goal
+## Goal
 Our prime goal is to provide end-to-end information broadcast.
 
 We are worried about organisations and government spying on our messages.
+
+If we dont have your private keys, then there is no back-door.
 
 
 ## API description:
