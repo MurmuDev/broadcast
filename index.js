@@ -7,7 +7,7 @@ const db = require('./db');
 //define end points here
 var handle = {};
 handle["/"] = requestHandler.allKey;
-handle["/all"] = requestHandler.allKey;
+handle["/allKey"] = requestHandler.allKey;
 handle["/uploadKey"] = requestHandler.uploadKey;
 handle["/getByMail"] = requestHandler.getByMail;
 handle["/messageByMail"] = requestHandler.messageByMail;
