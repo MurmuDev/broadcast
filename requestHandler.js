@@ -79,6 +79,8 @@ function uploadKey(resCallback,urlParsed,req)
               //path must be accessible for the database server
               let newpath = '/var/lib/mysql-files/key'+'/'+dateString;
 
+
+
        //moving upload file from temp
        fileHandling.renameFile(oldpath,newpath);
      },
@@ -172,6 +174,10 @@ function messageByMail(resCallback,urlParsed)
 }
 
 
+function getMessage()
+{
+  
+}
 //export here
 exports.allKey = allKey;
 exports.uploadKey = uploadKey;
