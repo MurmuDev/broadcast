@@ -11,7 +11,7 @@ handle["/allKey"] = requestHandler.allKey;
 handle["/uploadKey"] = requestHandler.uploadKey;
 handle["/getByMail"] = requestHandler.getByMail;
 handle["/messageByMail"] = requestHandler.messageByMail;
-
+handle["/uploadMessage"] = requestHandler.uploadMessage;
 
 //starting the server
 server.start(handle,router.route);

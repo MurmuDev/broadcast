@@ -34,29 +34,39 @@ function allKey(resCallback)
 //upload message
 function uploadMessage(resCallback,urlParsed,req)
 {
-  parser.parseForm(req,
-
+  parser.parseMessage(req,
   (fields,files)=>{
-    let oldpath = files.file.path;
-    let dateString = new Date().toISOString();
+            let oldpath = files.message.path;
 
-    //getting home directory below
-    //const homedir = require('os').homedir();
+            let dateString = new Date().toISOString();
 
-    //set new address here
-    //path must be accessible for the database server
-    let newpath = '/var/lib/mysql-files/message'+'/'+dateString;
+            //getting home directory below
+            //const homedir = require('os').homedir();
 
-    //moving upload file from temp
+
+            //NOTE:CHECK IF EMAIL NAMED DIR EXISTS IF NOT THEN UNAUTHORISED ACCESS
+            //NOTE:DIR MUST BE CREATED DURING SIGN UP
+
+            //set new address here
+            //path must be accessible for the database server
+            let newpath = '/var/lib/mysql-files/message'+'/'+fields.email+'/'+dateString;
+
+
+    // moving upload file from temp
     fileHandling.renameFile(oldpath,newpath);
 
-  },
+    //updating message table
+    let path = '/var/lib/mysql-files/message'+'/'+fields.email;
+    let logStream = fs.createWriteStream(path+'/'+fields.email,{flags:'a'});
+    logStream.write(dateString+'\n');
+  });
 
-  callback({
+
+  resCallback({
     data : '',
     type : 'text/plain',
     HTTPcode :204
-  }))
+  });
 }
 
 
@@ -174,12 +184,11 @@ function messageByMail(resCallback,urlParsed)
 }
 
 
-function getMessage()
-{
-  
-}
+
+
 //export here
 exports.allKey = allKey;
 exports.uploadKey = uploadKey;
 exports.getByMail = getByMail;
 exports.messageByMail = messageByMail;
+exports.uploadMessage = uploadMessage;
